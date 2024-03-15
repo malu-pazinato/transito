@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transito</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            font-size: 16px;
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            flex-direction: column;
+        }
+        header {
+            background-color: #ffffff;
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+        }
+        main {
+            margin-top:  20px; 
+            text-align: center;
+        }
+        h1 {
+            color: rgb(0, 0, 0);
+        }
+        p {
+            color: rgb(7, 12, 17);
+        }
+        input {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 2px solid #000000;
+        }
+        img {
+            height: 250px;
+            width: 250px;
+        }
+
+        footer {
+          background-color: #ffffff;
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+            position: absolute;
+            bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>venha ver como está!!</h1>
+        <!-- conteúdo adicional do cabeçalho -->
+    </header>
+    <section id="momento">No momento está:</section>
+    <div id="infopok"></div>
+    
+    <script>
+        let momento=document.getElementById("momento")
+        let carro=document.getElementById("infopok")
+        fetch("https://niloweb.com.br/transit-room/api/reg_endpoint.php")
+        .then(resposta=>resposta.json()
+        .then(dados1=>{
+            if(dados1[0].res=="B"){
+                console.log(dados1)
+                momento.innerHTML=`No momento está aguardando:`
+                carro.innerHTML=`
+                <img src="images/amarelo.png" alt="">
+                `
+            }
+            else if(dados1[0].res=="L"){
+                console.log(dados1)
+                momento.innerHTML=`No momento está livre:`
+                carro.innerHTML=`
+                <img src="images/liberado.png" alt="">
+                <img src="images/carroverde.png" alt="">
+                `
+            }
+            else{
+                console.log(dados1)
+                momento.innerHTML=`No momento está bloqueado:`
+                carro.innerHTML=`
+                <img src="images/carrovermelho.png" alt="">
+                `
+            }
+        }))
+    </script>
+</body>
+<footer>
+        <p>Footer do Site</p>
+        <!--  informações de contato ou qualquer conteúdo  -->
+    </footer>
+</html>
