@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title>Transito</title>
     <style>
         body {
@@ -17,6 +18,9 @@
             border-radius: 5px;
             cursor: pointer;
             flex-direction: column;
+            background-image: url(./images/avenida.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         header {
             background-color: #ffffff;
@@ -44,14 +48,15 @@
             height: 250px;
             width: 250px;
         }
-
-        footer {
-          background-color: #ffffff;
-            color: white;
-            padding: 10px 0;
-            width: 100%;
-            position: absolute;
-            bottom: 0px;
+        #infopok{
+          margin-top: 25%;
+        }
+        @media screen and (max-width: 800px){
+         body{
+          background-image: url(images/avenida.jpg);
+          background-size: contain;
+          align-items: center;
+         }
         }
     </style>
 </head>
@@ -66,15 +71,18 @@
     <script>
         let momento=document.getElementById("momento")
         let carro=document.getElementById("infopok")
+        
         fetch("https://niloweb.com.br/transit-room/api/reg_endpoint.php")
         .then(resposta=>resposta.json()
         .then(dados1=>{
             if(dados1[0].res=="B"){
                 console.log(dados1)
-                momento.innerHTML=`No momento está aguardando:`
+                momento.innerHTML=`No momento está bloqueado`
                 carro.innerHTML=`
-                <img src="images/amarelo.png" alt="">
+                <img src="images/carrovermelho.png" alt="">
+                <img src="images/bloqueado.png" alt="">
                 `
+                tocarSom(); // Reproduz o som
             }
             else if(dados1[0].res=="L"){
                 console.log(dados1)
@@ -86,16 +94,19 @@
             }
             else{
                 console.log(dados1)
-                momento.innerHTML=`No momento está bloqueado:`
+                momento.innerHTML=`No momento está aguardando:`
                 carro.innerHTML=`
-                <img src="images/carrovermelho.png" alt="">
+                <img src="images/carroamarelo.png" alt="">
+                <img src="images/aguardando.png" alt="">
                 `
             }
         }))
+
+        function tocarSom(){
+          let som = new Audio('carro-cantando-pneu.mp3');
+          som.play(); 
+        }
+        
     </script>
 </body>
-<footer>
-        <p>Footer do Site</p>
-        <!--  informações de contato ou qualquer conteúdo  -->
-    </footer>
 </html>
