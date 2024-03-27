@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Trânsito</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+        header {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px #0000001a;
+        }
+        h1 {
+            margin: 10px 0;
+            font-size: 32px;
+        }
+        .fila-info {
+            margin-top: 20px;
+            text-align: left;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px #0000001a;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .aguardando {
+            color: #FFA500;
+        }
+        .bloqueado {
+            color: #FF0000;
+        }
+        .liberado {
+            color: #008000;
+        }
+        button {
+            background-color: #555555;
+            border: none;
+            color: #ffffff;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        button:hover {
+            background-color: #005f6b;
+        }
+        .fila-info hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+        .fila-info div {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard de Trânsito</h1>
+        <button> <a href="semafaro.html">Semáforo</a></button>
+    </header>
+    <div class="fila-info" id="fila-info"></div>
+
+    <script>
+        const filaInfoElement = document.getElementById("fila-info");
+
+        function atualizarDashboard() {
+            fetch("https://niloweb.com.br/transit-room/api/reg_endpoint_all.php")
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    const filaHTML = data.map(item => {
+                        let statusClass;
+                        switch (item.res) {
+                            case "A":
+                                statusClass = "aguardando";
+                                break;
+                            case "B":
+                                statusClass = "bloqueado";
+                                break;
+                            case "L":
+                                statusClass = "liberado";
+                                break;
+                            default:
+                                statusClass = "";
+                                break;
+                        }
+                        return `
+                            <div class="${statusClass}">
+                                <p><span class="status">Reserva:</span> ${item.res}</p>
+                                <p><span class="status">Dia:</span> ${item.dia}</p>
+                                <p><span class="status">Nome:</span> ${item.nome}</p>
+                                <p><span class="status">Sobrenome:</span> ${item.sobrenome}</p>
+                                <p><span class="status">Hora:</span> ${item.hora}</p>
+                                <p><span class="status">Data:</span> ${item.data}</p>
+                                <p><span class="status">Motivo:</span> ${item.motivo}</p>
+                            </div>
+                        `;
+                    }).join('');
+                    filaInfoElement.innerHTML = `
+                        <h2>Fila de Trânsito</h2>
+                        ${filaHTML}
+                    `;
+                } else {
+                    filaInfoElement.innerHTML = "<p>Não há informações disponíveis sobre a fila de trânsito no momento.</p>";
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao obter os dados:', error);
+                filaInfoElement.innerHTML = "<p>Ocorreu um erro ao carregar as informações da fila de trânsito.</p>";
+            });
+        }
+
+        // Chamar a função atualizarDashboard a cada 5 segundos (5000 milissegundos)
+        setInterval(atualizarDashboard, 5000);
+
+        // Chamada inicial da função para carregar os dados imediatamente
+        atualizarDashboard();
+    </script>
+</body>
+</html>

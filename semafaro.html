@@ -7,7 +7,7 @@
     <title>Transito</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
             display: flex;
             justify-content: center;
@@ -23,10 +23,12 @@
             background-size: cover;
         }
         header {
-            background-color: #00c3ff;
-            color: white;
-            padding: 10px 0;
-            width: 100%;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px #0000001a;
         }
         main {
             margin-top:  20px; 
@@ -53,6 +55,8 @@
           position: fixed;
             animation: velocidade 3s linear infinite;
         }
+
+        
         
         @keyframes velocidade {
           from {
@@ -78,6 +82,7 @@
 <body>
     <header>
         <h1>venha ver como está!!</h1>
+        <button> <a href="dashboard.html">dashboard</a></button>
         <!-- conteúdo adicional do cabeçalho -->
     </header>
     <section id="momento">No momento está:</section>
@@ -127,3 +132,6 @@
     </script>
 </body>
 </html>
+
+
+
